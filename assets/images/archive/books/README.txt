@@ -1,0 +1,1 @@
+Place book cover images here, e.g. 1.png, 2.jpg. In Supabase archive_entries, use section=movies, metadata.type=Book, and metadata.image_path="assets/images/archive/books/1.png". The actual image files are not included.

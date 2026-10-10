@@ -1,0 +1,6 @@
+section,title,description,metadata,tags,sort_order,is_published
+movies,Example movie title,Replace this with your own short review,"{""type"":""Movie"",""year"":2024,""genres"":[""Fantasy"",""Drama""],""emoji"":""🎬"",""color"":""poster-lilac""}","{Fantasy,Drama}",10,true
+ships,Example pairing or dynamic,Describe what you like about this pairing or trope,"{""kind"":""Ship"",""fandom"":""Fandom name"",""characters"":""Character A × Character B"",""tropes"":[""Slow burn"",""Mutual pining""],""emoji"":""💌""}","{Slow burn,Mutual pining}",20,true
+songs,Example song title,Optional personal note about this song,"{""artist"":""Artist name"",""src"":""assets/music/example-song.mp3"",""mood"":""late night"",""url"":""""}","{late-night,comfort}",30,true
+hobbies,Example hobby,Describe why you enjoy this hobby,"{""kind"":""Hobby"",""category"":""Creative"",""emoji"":""🎨""}","{creative,personal}",40,true
+movies,Example book title,Replace with a short note about this book,"{""type"":""Book"",""author"":""Author name"",""year"":2024,""genres"":[""Fantasy""],""image_path"":""assets/images/archive/books/1.png"",""emoji"":""📚""}","{Fantasy,Reading}",50,true

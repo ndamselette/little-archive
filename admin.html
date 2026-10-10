@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#f8f2eb" />
+    <title>Little Archive · Private desk</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/admin.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/admin.js" defer></script>
+  </head>
+  <body>
+    <header class="admin-top">
+      <a href="index.html" class="brand">little archive <span>♡</span></a
+      ><span>private desk</span>
+    </header>
+    <main class="admin-shell">
+      <section class="login-card" id="loginCard">
+        <div class="eyebrow">just for you · admin access</div>
+        <h1>Your little archive desk.</h1>
+        <p>
+          Sign in with the admin account you created in Supabase. Public
+          visitors cannot manage your collections.
+        </p>
+        <form id="loginForm">
+          <label
+            >Email<input
+              type="email"
+              id="loginEmail"
+              autocomplete="username"
+              required
+              placeholder="you@example.com" /></label
+          ><label
+            >Password<input
+              type="password"
+              id="loginPassword"
+              autocomplete="current-password"
+              required
+              placeholder="Your password" /></label
+          ><button class="primary" type="submit">Sign in ♡</button>
+        </form>
+        <p class="status" id="loginStatus" role="status"></p>
+      </section>
+      <section id="dashboard" hidden>
+        <div class="dash-heading">
+          <div>
+            <div class="eyebrow">your own little filing cabinet</div>
+            <h1>Manage the archive.</h1>
+            <p>
+              Add a new memory, update a detail, or hide an entry without
+              editing website code.
+            </p>
+          </div>
+          <button class="quiet" id="signOut">Sign out</button>
+        </div>
+        <div class="dash-grid">
+          <section class="panel editor-panel">
+            <div class="panel-heading">
+              <h2 id="formHeading">Add an entry</h2>
+              <button class="quiet" id="resetForm" type="button">
+                Clear form
+              </button>
+            </div>
+            <form id="entryForm">
+              <input type="hidden" id="entryId" />
+              <label
+                >Collection<select id="section" required>
+                  <option value="movies">Movies & series</option>
+                  <option value="ships">Ships & dynamics</option>
+                  <option value="songs">Songs</option>
+                  <option value="hobbies">Hobbies & interests</option>
+                </select></label
+              >
+              <label
+                >Title<input
+                  id="title"
+                  maxlength="160"
+                  required
+                  placeholder="Entry title"
+              /></label>
+              <label
+                >Description / note<textarea
+                  id="description"
+                  rows="3"
+                  maxlength="5000"
+                  placeholder="What do you want to remember about it?"
+                ></textarea>
+              </label>
+              <label
+                >Tags <span class="hint">comma-separated</span
+                ><input id="tags" placeholder="fantasy, comfort, slow burn"
+              /></label>
+              <label
+                >Extra details
+                <span class="hint">JSON, depending on collection</span
+                ><textarea id="metadata" rows="7" spellcheck="false"></textarea>
+              </label>
+              <p class="field-help" id="metadataHelp">
+                Optional JSON details. Example:
+                {"type":"Movie","year":2024,"genres":["Fantasy"],"emoji":"🎬","color":"poster-lilac"}
+              </p>
+              <div class="form-row">
+                <label
+                  >Sort order<input
+                    id="sortOrder"
+                    type="number"
+                    value="0" /></label
+                ><label class="check-label"
+                  ><input id="published" type="checkbox" checked /> Visible on
+                  website</label
+                >
+              </div>
+              <div class="form-actions">
+                <button class="primary" type="submit" id="saveEntry">
+                  Save entry ♡</button
+                ><button class="quiet" id="cancelEdit" type="button" hidden>
+                  Cancel edit
+                </button>
+              </div>
+              <p class="status" id="formStatus" role="status"></p>
+            </form>
+          </section>
+          <section class="panel list-panel">
+            <div class="panel-heading">
+              <h2>Your entries</h2>
+              <button class="quiet" id="refreshEntries" type="button">
+                Refresh
+              </button>
+            </div>
+            <div class="list-tools">
+              <input
+                id="listSearch"
+                type="search"
+                placeholder="Search your entries…"
+              /><select id="listSection">
+                <option value="all">All collections</option>
+                <option value="movies">Movies & series</option>
+                <option value="ships">Ships & dynamics</option>
+                <option value="songs">Songs</option>
+                <option value="hobbies">Hobbies & interests</option>
+              </select>
+            </div>
+            <p class="status" id="listStatus" role="status"></p>
+            <div class="entry-list" id="entryList"></div>
+          </section>
+        </div>
+        <p class="security-note">
+          Security note: permissions are enforced by Supabase Row Level
+          Security, not just by hiding this page. Never put a Supabase
+          secret/service-role key in this website.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>
