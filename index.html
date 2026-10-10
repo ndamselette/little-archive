@@ -161,14 +161,78 @@
   <footer class="wrap footer" id="footer"><strong>made with a little love ♡</strong><span>© <span id="year"></span> Your Name · <a href="mailto:hello@example.com">say hi</a></span><span>best viewed with curiosity.</span></footer>
 
   <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal"><div class="mobile-modal-bar" id="mobileModalBar"><span id="mobileModalTitle">Little Archive</span><button class="modal-close" id="modalClose" aria-label="Close dialog">×</button></div><div class="modal-cover" id="modalCover"></div><div class="modal-content">
-      <div id="standardModalContent"><div class="eyebrow" id="modalEyebrow"></div><h2 id="modalTitle"></h2><p id="modalBody"></p><div class="modal-tags" id="modalTags"></div><div class="modal-note" id="modalNote"></div></div>
-      <div class="movie-browser" id="movieBrowser" hidden><div class="eyebrow">chapter three · the watch diary</div><h2>Movies &amp; series I've watched.</h2><p class="movie-intro">A little shelf of stories I've spent time with. Search a title or filter by genre and format.</p><div class="movie-tools"><input id="movieSearch" type="search" placeholder="Search by title…" aria-label="Search movies and series by title"><select id="genreFilter" aria-label="Filter by genre"><option value="all">All genres</option></select><select id="typeFilter" aria-label="Filter by type"><option value="all">All types</option><option value="Movie">Movies</option><option value="Series">Series</option><option value="Book">Books</option></select></div><p class="movie-count" id="movieCount" aria-live="polite"></p><div class="movie-grid" id="movieGrid"></div><p class="modal-note">Add movies, series, and books through the private admin dashboard. Book entries can include an author and a cover image path.</p></div>
-      <div class="browser" id="shipBrowser" hidden><div class="eyebrow">chapter two · fictional feelings</div><h2>Ships &amp; relationship dynamics.</h2><p class="browser-intro">Search pairings, characters, fandoms, and tropes. Combine a search with either filter.</p><div class="browser-tools"><input id="shipSearch" type="search" placeholder="Search ships, characters, fandom…" aria-label="Search ships and dynamics"><select id="shipKind" aria-label="Filter by category"><option value="all">Ships &amp; dynamics</option><option value="Ship">Ships</option><option value="Dynamic">Dynamics</option></select><select id="shipTrope" aria-label="Filter by trope"><option value="all">All tropes</option></select></div><p class="browser-count" id="shipCount" aria-live="polite"></p><div class="archive-results" id="shipGrid"></div><p class="modal-note">These are example entries. Edit the <code>shipsAndDynamics</code> array in <code>js/script.js</code> with your own fandoms, pairings, and tropes.</p></div>
-      <div class="browser" id="hobbiesBrowser" hidden><div class="eyebrow">chapter five · little joys</div><h2>Hobbies &amp; interests.</h2><p class="browser-intro">Things I do, things I love, and people whose content I enjoy. Search or filter by category.</p><div class="browser-tools"><input id="hobbySearch" type="search" placeholder="Search hobbies & interests…" aria-label="Search hobbies and interests"><select id="hobbyCategory" aria-label="Filter hobbies by category"><option value="all">All categories</option></select><select id="hobbyKind" aria-label="Filter by kind"><option value="all">Everything</option><option value="Hobby">Hobbies</option><option value="Interest">Interests</option><option value="Creator">Creators</option></select></div><p class="browser-count" id="hobbyCount" aria-live="polite"></p><div class="archive-results" id="hobbyGrid"></div><p class="modal-note">Edit the <code>hobbiesAndInterests</code> array in <code>js/script.js</code> to personalize this collection.</p></div>
-      <div class="browser" id="musicBrowser" hidden><div class="eyebrow">chapter four · soundtrack of me</div><h2>Songs on repeat.</h2><p class="browser-intro">A little soundtrack for different moods, memories, and versions of me.</p><div class="music-tools"><span class="track-sub" id="trackCount">Tracks from the code</span></div><div class="track-list" id="trackList"><div class="empty">Add songs to the <code>songs</code> array in <code>js/script.js</code> and they'll appear here ♡</div></div><div class="music-code-note">To add songs, place MP3 files in <code>assets/music/</code> and edit the <code>songs</code> array in <code>js/script.js</code>. No upload button is shown on the website.</div></div>
-    </div></div>
-  </div>
+    <div class="modal">
+      <div class="mobile-modal-bar" id="mobileModalBar"><span id="mobileModalTitle">Little Archive</span><button
+          class="modal-close" id="modalClose" aria-label="Close dialog">×</button></div>
+      <div class="modal-cover" id="modalCover"></div>
+      <div class="modal-content">
+        <div id="standardModalContent">
+          <div class="eyebrow" id="modalEyebrow"></div>
+          <h2 id="modalTitle"></h2>
+          <p id="modalBody"></p>
+          <div class="modal-tags" id="modalTags"></div>
+          <div class="modal-note" id="modalNote"></div>
+        </div>
+        <div class="movie-browser" id="movieBrowser" hidden>
+          <div class="eyebrow">chapter three · the watch diary</div>
+          <h2>Movies &amp; series I've watched.</h2>
+          <p class="movie-intro">A little shelf of stories I've spent time with. Search a title or filter by genre and
+            format.</p>
+          <div class="movie-tools"><input id="movieSearch" type="search" placeholder="Search by title…"
+              aria-label="Search movies and series by title"><select id="genreFilter" aria-label="Filter by genre">
+              <option value="all">All genres</option>
+            </select><select id="typeFilter" aria-label="Filter by type">
+              <option value="all">All types</option>
+              <option value="Movie">Movies</option>
+              <option value="Series">Series</option>
+              <option value="Book">Books</option>
+            </select></div>
+          <p class="movie-count" id="movieCount" aria-live="polite"></p>
+          <div class="movie-grid" id="movieGrid"></div>
+        </div>
+        <div class="browser" id="shipBrowser" hidden>
+          <div class="eyebrow">chapter two · fictional feelings</div>
+          <h2>Ships &amp; relationship dynamics.</h2>
+          <p class="browser-intro">Search pairings, characters, fandoms, and tropes. Combine a search with either filter.
+          </p>
+          <div class="browser-tools"><input id="shipSearch" type="search" placeholder="Search ships, characters, fandom…"
+              aria-label="Search ships and dynamics"><select id="shipKind" aria-label="Filter by category">
+              <option value="all">Ships &amp; dynamics</option>
+              <option value="Ship">Ships</option>
+              <option value="Dynamic">Dynamics</option>
+            </select><select id="shipTrope" aria-label="Filter by trope">
+              <option value="all">All tropes</option>
+            </select></div>
+          <p class="browser-count" id="shipCount" aria-live="polite"></p>
+          <div class="archive-results" id="shipGrid"></div>
+        </div>
+        <div class="browser" id="hobbiesBrowser" hidden>
+          <div class="eyebrow">chapter five · little joys</div>
+          <h2>Hobbies &amp; interests.</h2>
+          <p class="browser-intro">Things I do, things I love, and people whose content I enjoy. Search or filter by
+            category.</p>
+          <div class="browser-tools"><input id="hobbySearch" type="search" placeholder="Search hobbies & interests…"
+              aria-label="Search hobbies and interests"><select id="hobbyCategory"
+              aria-label="Filter hobbies by category">
+              <option value="all">All categories</option>
+            </select><select id="hobbyKind" aria-label="Filter by kind">
+              <option value="all">Everything</option>
+              <option value="Hobby">Hobbies</option>
+              <option value="Interest">Interests</option>
+              <option value="Creator">Creators</option>
+            </select></div>
+          <p class="browser-count" id="hobbyCount" aria-live="polite"></p>
+          <div class="archive-results" id="hobbyGrid"></div>
+        </div>
+        <div class="browser" id="musicBrowser" hidden>
+          <div class="eyebrow">chapter four · soundtrack of me</div>
+          <h2>Songs on repeat.</h2>
+          <p class="browser-intro">A little soundtrack for different moods, memories, and versions of me.</p>
+          <div class="music-tools"><span class="track-sub" id="trackCount">Tracks from the code</span></div>
+          <div class="track-list" id="trackList"></div>
+        </div>
+      </div>
+    </div>
 
   <script src="js/script.js" defer></script>
 </body>
