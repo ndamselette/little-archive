@@ -26,7 +26,7 @@ const archive = [
     number: "01",
     title: "Ships & dynamics",
     short: "Pairings, tropes, character chemistry, and story ideas on my mind.",
-    label: "fictional feelings",
+    label: "how I'm feeling",
     symbol: "💌",
     art: "art-ships",
     image: "assets/images/archive/ships/1.png",
