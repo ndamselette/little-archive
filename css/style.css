@@ -524,33 +524,57 @@ section {
   font-size: 0.78rem;
   color: var(--rose);
   white-space: nowrap;
+}.quote-side {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  min-width: 0;
 }
-.quote-side {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 14px;
-}
+
 .quote-side-card {
   background: var(--butter);
   border-radius: var(--radius);
   padding: 22px;
-  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 12px;
 }
+
 .quote-side-card.lilac {
   background: var(--lilac);
 }
+
 .quote-side-card strong {
   font:
     500 1.4rem "Playfair Display",
     serif;
+  overflow-wrap: anywhere;
 }
+
 .quote-side-card span {
   font-size: 0.77rem;
   color: #75655f;
+}
+
+@media (max-width: 480px) {
+  .quote-side {
+    gap: 8px;
+  }
+
+  .quote-side-card {
+    padding: 14px 10px;
+  }
+
+  .quote-side-card strong {
+    font-size: 1.1rem;
+  }
+
+  .quote-side-card span {
+    font-size: 0.68rem;
+  }
 }
 .carousel-controls {
   display: flex;
