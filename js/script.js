@@ -127,7 +127,7 @@ async function loadArchiveEntries() {
         title: r.title,
         type: r.metadata?.type || "Movie",
         year: r.metadata?.year || "",
-        author: r.metadata?.author || "",
+        author: r.metadata?.author || r.metadata?.director || "",
         genres: Array.isArray(r.metadata?.genres)
           ? r.metadata.genres
           : r.tags || [],
@@ -135,7 +135,7 @@ async function loadArchiveEntries() {
           r.metadata?.image_path ||
           (r.metadata?.type === "Book"
             ? "assets/images/archive/books/1.png"
-            : ""),
+            : "assets/images/archive/movies/1.png"),
         emoji: r.metadata?.emoji || (r.metadata?.type === "Book" ? "📚" : "🎬"),
         color: r.metadata?.color || "poster-rose",
         note: r.description || "",
@@ -150,8 +150,8 @@ async function loadArchiveEntries() {
         tropes: Array.isArray(r.metadata?.tropes)
           ? r.metadata.tropes
           : r.tags || [],
-        image: r.metadata?.image_path || "",
-        emoji: r.metadata?.emoji || "💌",
+        image: r.metadata?.image_path || "assets/images/archive/ships/1.png",
+        emoji: r.metadata?.emoji || "💌", 
         note: r.description || "",
       }));
     songs = rows
@@ -162,6 +162,7 @@ async function loadArchiveEntries() {
         src: r.metadata?.src || "",
         mood: r.metadata?.mood || "",
         url: r.metadata?.url || "",
+        note: r.description || "",
       }));
     hobbiesAndInterests = rows
       .filter((r) => r.section === "hobbies")
@@ -169,7 +170,7 @@ async function loadArchiveEntries() {
         title: r.title,
         kind: r.metadata?.kind || "Hobby",
         category: r.metadata?.category || "Others",
-        image: r.metadata?.image_path || "",
+        image: r.metadata?.image_path || "assets/images/archive/hobbies/1.png",
         emoji: r.metadata?.emoji || "✿",
         note: r.description || "",
       }));
@@ -457,7 +458,7 @@ function renderMovies() {
     ? results
         .map(
           (m, i) =>
-            `<article class="movie-card" style="animation-delay:${Math.min(i, 8) * 35}ms"><div class="movie-poster ${m.color}">${m.image ? `<img src="${escapeHTML(m.image)}" alt="${escapeHTML(m.title)} poster" loading="lazy" onerror="this.remove()">` : ``}<span>${m.emoji}</span></div><div class="movie-info"><h3 class="movie-title">${m.title}</h3><div class="movie-meta">${m.type}${m.year ? " · " + m.year : ""}${m.author ? " · by " + escapeHTML(m.author) : ""}</div><div class="movie-tags"><span class="tag">${m.type}</span>${m.genres.map((g) => `<span class="tag">${g}</span>`).join("")}</div><p style="font-size:.78rem;color:var(--muted);margin:10px 0 0">${m.note}</p></div></article>`,
+            `<article class="movie-card" style="animation-delay:${Math.min(i, 8) * 35}ms"><div class="movie-poster ${m.color}">${m.image ? `<img src="${escapeHTML(m.image)}" alt="${escapeHTML(m.title)} poster" loading="lazy" onerror="this.onerror=null;this.src='${m.type === "Book" ? "assets/images/archive/books/1.png" : "assets/images/archive/movies/1.png"}'">` : ``}<span>${m.emoji}</span></div><div class="movie-info"><h3 class="movie-title">${m.title}</h3><div class="movie-meta">${m.type}${m.year ? " · " + m.year : ""}${m.author ? " · by " + escapeHTML(m.author) : ""}</div><div class="movie-tags"><span class="tag">${m.type}</span>${m.genres.map((g) => `<span class="tag">${g}</span>`).join("")}</div><p style="font-size:.78rem;color:var(--muted);margin:10px 0 0">${m.note}</p></div></article>`,
         )
         .join("")
     : '<div class="movie-empty">No titles found ♡<br><small>Try another title or remove a filter.</small></div>';
@@ -491,7 +492,7 @@ function renderShips() {
     ? results
         .map(
           (x, i) =>
-            `<article class="archive-result" style="animation-delay:${Math.min(i, 8) * 35}ms"><div class="result-art">${x.image ? `<img src="${escapeHTML(x.image)}" alt="${escapeHTML(x.title)}" loading="lazy" onerror="this.remove()">` : x.emoji}</div><div class="result-copy"><span class="tag">${escapeHTML(x.kind)}</span><h3>${escapeHTML(x.title)}</h3><div class="track-sub">${x.fandom} · ${x.characters}</div><div class="movie-tags" style="margin-top:8px">${x.tropes.map((t) => `<span class="tag">${t}</span>`).join("")}</div><p>${x.note}</p></div></article>`,
+            `<article class="archive-result" style="animation-delay:${Math.min(i, 8) * 35}ms"><div class="result-art"><img src="${escapeHTML(x.image || 'assets/images/archive/ships/1.png')}" alt="${escapeHTML(x.title)}" loading="lazy" onerror="this.onerror=null;this.src='assets/images/archive/ships/1.png'"></div><div class="result-copy"><span class="tag">${escapeHTML(x.kind)}</span><h3>${escapeHTML(x.title)}</h3><div class="track-sub">${x.fandom} · ${x.characters}</div><div class="movie-tags" style="margin-top:8px">${x.tropes.map((t) => `<span class="tag">${t}</span>`).join("")}</div><p>${x.note}</p></div></article>`,
         )
         .join("")
     : '<div class="movie-empty">No ships or dynamics found ♡<br><small>Try another search or filter.</small></div>';
@@ -528,7 +529,7 @@ function renderHobbies() {
     ? results
         .map(
           (x) =>
-            `<article class="archive-result"><div class="result-art">${x.image ? `<img src="${escapeHTML(x.image)}" alt="${escapeHTML(x.title)}" loading="lazy" onerror="this.remove()">` : x.emoji}</div><div class="result-copy"><span class="tag">${escapeHTML(x.kind)}</span><h3>${escapeHTML(x.title)}</h3><div class="hobby-tags"><span class="hobby-tag ${String(x.kind).toLowerCase()}">${escapeHTML(x.kind)}</span><span class="hobby-tag ${String(x.kind).toLowerCase()}">${escapeHTML(x.category)}</span></div><p>${escapeHTML(x.note)}</p></div></article>`,
+            `<article class="archive-result"><div class="result-art"><img src="${escapeHTML(x.image || 'assets/images/archive/hobbies/1.png')}" alt="${escapeHTML(x.title)}" loading="lazy" onerror="this.onerror=null;this.src='assets/images/archive/hobbies/1.png'"></div><div class="result-copy"><span class="tag">${escapeHTML(x.kind)}</span><h3>${escapeHTML(x.title)}</h3><div class="hobby-tags"><span class="hobby-tag ${String(x.kind).toLowerCase()}">${escapeHTML(x.kind)}</span><span class="hobby-tag ${String(x.kind).toLowerCase()}">${escapeHTML(x.category)}</span></div><p>${escapeHTML(x.note)}</p></div></article>`,
         )
         .join("")
     : '<div class="movie-empty">Nothing found yet ♡</div>';
@@ -542,8 +543,8 @@ function renderTracks() {
   $("#trackList").innerHTML = songs.length
     ? songs
         .map(
-          (t, i) =>
-            `<div class="track-row"><div class="track-icon">♫</div><div><div class="track-name">${escapeHTML(t.title)}</div><div class="track-sub">${escapeHTML(t.artist || "Unknown artist")}${t.mood ? " · " + escapeHTML(t.mood) : ""}</div></div><audio controls preload="metadata" src="${escapeHTML(t.src)}" aria-label="Play ${escapeHTML(t.title)}"></audio></div>`,
+          (t) =>
+            `<div class="track-row"><div class="track-icon" aria-hidden="true">♫</div><div class="track-copy"><div class="track-name">${escapeHTML(t.title)}</div><div class="track-sub">${escapeHTML(t.artist || "Unknown artist")}${t.mood ? " · " + escapeHTML(t.mood) : ""}</div>${t.note ? `<p class="track-description">${escapeHTML(t.note)}</p>` : ""}${t.url ? `<a class="track-link" href="${escapeHTML(t.url)}" target="_blank" rel="noopener noreferrer">Open song / playlist ↗</a>` : ""}</div>${t.src ? `<audio controls preload="metadata" src="${escapeHTML(t.src)}" aria-label="Play ${escapeHTML(t.title)}"></audio>` : ""}</div>`,
         )
         .join("")
     : '<div class="empty">Your soundtrack is waiting ♡<br><small>Add songs in your private archive dashboard.</small></div>';

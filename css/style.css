@@ -722,7 +722,8 @@ section {
   box-shadow: var(--shadow);
 }
 .movie-poster {
-  height: 160px;
+  width: 100%;
+  aspect-ratio: 2 / 3;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1279,9 +1280,6 @@ section {
   .movie-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .movie-poster {
-    height: 140px;
-  }
   .wrap {
     width: min(100% - 28px, 600px);
   }
@@ -1369,9 +1367,6 @@ section {
   }
   .movie-grid {
     grid-template-columns: 1fr 1fr;
-  }
-  .movie-poster {
-    height: 115px;
   }
   .modal.movie-mode .modal-content {
     padding: 22px 16px;
@@ -2244,3 +2239,40 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .guestbook-status:empty { display: none; }
 .guestbook-status.success { color: var(--green-deep, #3f602f); }
 .guestbook-status.error { color: #a34b4b; }
+
+/* Archive song artwork thumbnails */
+.track-cover{width:54px;height:68px;flex:0 0 54px;object-fit:cover;border-radius:10px;background:var(--card);border:1px solid var(--line)}
+.track-row{align-items:center}
+@media(max-width:520px){.track-cover{width:44px;height:56px;flex-basis:44px}}
+
+
+/* Song archive: text-first rows (no cover images) */
+.track-row {
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: start;
+}
+.track-row .track-icon {
+  grid-row: 1;
+}
+.track-copy {
+  min-width: 0;
+}
+.track-description {
+  margin: 6px 0 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.track-link {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 0.76rem;
+}
+.track-row audio {
+  grid-column: 1 / -1;
+}
+@media (max-width: 520px) {
+  .track-row { grid-template-columns: 36px minmax(0, 1fr); }
+  .track-row .track-icon { width: 36px; height: 36px; }
+}

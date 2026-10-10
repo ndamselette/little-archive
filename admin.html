@@ -59,6 +59,26 @@
           </div>
           <button class="quiet" id="signOut">Sign out</button>
         </div>
+        <section class="panel moderation-panel">
+          <div class="panel-heading">
+            <div>
+              <h2>Guestbook notes</h2>
+              <p class="field-help">Review notes before they appear publicly.</p>
+            </div>
+            <button class="quiet" id="refreshGuestbook" type="button">Refresh notes</button>
+          </div>
+          <div class="list-tools guestbook-tools">
+            <input id="guestbookSearch" type="search" placeholder="Search guestbook notes…" aria-label="Search guestbook notes" />
+            <select id="guestbookStatusFilter" aria-label="Filter guestbook status">
+              <option value="pending">Pending approval</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+              <option value="all">All notes</option>
+            </select>
+          </div>
+          <p class="status" id="guestbookAdminStatus" role="status" aria-live="polite"></p>
+          <div class="entry-list" id="guestbookList"></div>
+        </section>
         <div class="dash-grid">
           <section class="panel editor-panel">
             <div class="panel-heading">
@@ -71,7 +91,7 @@
               <input type="hidden" id="entryId" />
               <label
                 >Collection<select id="section" required>
-                  <option value="movies">Movies & series</option>
+                  <option value="movies">Movies, series & books</option>
                   <option value="ships">Ships & dynamics</option>
                   <option value="songs">Songs</option>
                   <option value="hobbies">Hobbies & interests</option>
@@ -96,15 +116,61 @@
                 >Tags <span class="hint">comma-separated</span
                 ><input id="tags" placeholder="fantasy, comfort, slow burn"
               /></label>
-              <label
-                >Extra details
-                <span class="hint">JSON, depending on collection</span
-                ><textarea id="metadata" rows="7" spellcheck="false"></textarea>
+              <div class="form-row" id="mediaTypeRow">
+                <label id="typeField">Type
+                  <select id="entryType">
+                    <option>Movie</option><option>Series</option><option>Book</option>
+                  </select>
+                </label>
+                <label id="yearField">Year
+                  <input id="entryYear" type="number" min="0" max="2200" placeholder="2026">
+                </label>
+                <label id="creatorField"><span id="creatorLabel">Director</span>
+                  <input id="entryCreator" maxlength="180" placeholder="Name">
+                </label>
+              </div>
+              <div class="form-row" id="kindCategoryRow">
+                <label id="kindField" hidden>Kind
+                  <select id="entryKind">
+                    <option>Ship</option><option>Dynamic</option><option>Hobby</option><option>Interest</option><option>Creator</option>
+                  </select>
+                </label>
+                <label id="categoryField" hidden>Category
+                  <input id="entryCategory" placeholder="Creative, Anime, Music…">
+                </label>
+              </div>
+              <label id="genreField">Genres <span class="hint">comma-separated</span>
+                <input id="entryGenres" placeholder="Fantasy, Drama, Romance">
               </label>
-              <p class="field-help" id="metadataHelp">
-                Optional JSON details. Example:
-                {"type":"Movie","year":2024,"genres":["Fantasy"],"emoji":"🎬","color":"poster-lilac"}
-              </p>
+              <div id="shipFields" hidden>
+                <label>Fandom
+                  <input id="entryFandom" placeholder="Fandom or source">
+                </label>
+                <label>Characters / pairing
+                  <input id="entryCharacters" placeholder="Character names or pairing">
+                </label>
+              </div>
+              <div id="songFields" hidden>
+                <label>Artist
+                  <input id="entryArtist" placeholder="Artist name">
+                </label>
+                <label>Audio file path <span class="hint">optional</span>
+                  <input id="entryAudio" placeholder="assets/music/song.mp3">
+                </label>
+                <label>Mood <span class="hint">optional</span>
+                  <input id="entryMood" placeholder="Dreamy, nostalgic, upbeat…">
+                </label>
+                <label>Song / playlist link <span class="hint">optional</span>
+                  <input id="entryUrl" type="url" placeholder="https://…">
+                </label>
+              </div>
+              <label id="imageField">Picture path <span class="hint">optional</span>
+                <input id="entryImage" placeholder="assets/images/archive/movies/1.png">
+              </label>
+              <div class="image-preview-wrap" id="imagePreviewWrap">
+                <img id="entryImagePreview" alt="Entry picture preview" />
+                <span id="imagePreviewStatus">A picture preview will appear here.</span>
+              </div>
               <div class="form-row">
                 <label
                   >Sort order<input
@@ -140,7 +206,7 @@
                 placeholder="Search your entries…"
               /><select id="listSection">
                 <option value="all">All collections</option>
-                <option value="movies">Movies & series</option>
+                <option value="movies">Movies, series & books</option>
                 <option value="ships">Ships & dynamics</option>
                 <option value="songs">Songs</option>
                 <option value="hobbies">Hobbies & interests</option>

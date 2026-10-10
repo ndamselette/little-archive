@@ -33,3 +33,25 @@ with check (
   and char_length(trim(message)) between 1 and 2500
   and category in ('Lovers','Family','Friends','Others')
 );
+
+
+-- Admin moderation: replace this placeholder with the UUID of your private
+-- Supabase Auth admin user (same UUID used in archive_entries.sql) before running.
+-- These policies let only that authenticated user review and change guestbook notes.
+grant select, update, delete on table public.guestbook to authenticated;
+
+drop policy if exists "Only archive admin can read all guestbook notes" on public.guestbook;
+create policy "Only archive admin can read all guestbook notes"
+on public.guestbook for select to authenticated
+using (auth.uid() = 'REPLACE_WITH_ADMIN_AUTH_USER_UUID'::uuid);
+
+drop policy if exists "Only archive admin can update guestbook notes" on public.guestbook;
+create policy "Only archive admin can update guestbook notes"
+on public.guestbook for update to authenticated
+using (auth.uid() = 'REPLACE_WITH_ADMIN_AUTH_USER_UUID'::uuid)
+with check (auth.uid() = 'REPLACE_WITH_ADMIN_AUTH_USER_UUID'::uuid);
+
+drop policy if exists "Only archive admin can delete guestbook notes" on public.guestbook;
+create policy "Only archive admin can delete guestbook notes"
+on public.guestbook for delete to authenticated
+using (auth.uid() = 'REPLACE_WITH_ADMIN_AUTH_USER_UUID'::uuid);
