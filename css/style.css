@@ -500,10 +500,10 @@ section {
 }
 .quote-text {
   font:
-    italic 500 clamp(1.35rem, 3vw, 2.2rem)/1.35 "Playfair Display",
+    italic 300 clamp(1.2rem, 2vw, 1.5rem)/1.5 "Playfair Display",
     serif;
-  max-width: 720px;
-  margin: 24px 0;
+  max-width: 580px;
+  margin: 20px auto;
 }
 .quote-footer {
   display: flex;
