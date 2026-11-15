@@ -1,6 +1,6 @@
 -- Little Archive curated content tables.
 -- BEFORE RUNNING: create your admin user in Supabase Auth > Users, copy its UUID,
--- then replace EVERY occurrence of REPLACE_WITH_ADMIN_AUTH_USER_UUID below with that UUID.
+-- then replace EVERY occurrence of 651aa9ca-0c95-45dc-8aab-af4d6167c938 below with that UUID.
 -- Keep guestbook.sql separate; this file does not change guestbook moderation.
 
 create table if not exists public.archive_entries (
@@ -29,24 +29,24 @@ create policy "Public can read published archive entries"
 on public.archive_entries for select to anon, authenticated
 using (
   is_published = true
-  or auth.uid() = 'REPLACE_WITH_ADMIN_AUTH_USER_UUID'::uuid
+  or auth.uid() = '651aa9ca-0c95-45dc-8aab-af4d6167c938'::uuid
 );
 
 drop policy if exists "Only archive admin can insert entries" on public.archive_entries;
 create policy "Only archive admin can insert entries"
 on public.archive_entries for insert to authenticated
-with check (auth.uid() = 'REPLACE_WITH_ADMIN_AUTH_USER_UUID'::uuid);
+with check (auth.uid() = '651aa9ca-0c95-45dc-8aab-af4d6167c938'::uuid);
 
 drop policy if exists "Only archive admin can update entries" on public.archive_entries;
 create policy "Only archive admin can update entries"
 on public.archive_entries for update to authenticated
-using (auth.uid() = 'REPLACE_WITH_ADMIN_AUTH_USER_UUID'::uuid)
-with check (auth.uid() = 'REPLACE_WITH_ADMIN_AUTH_USER_UUID'::uuid);
+using (auth.uid() = '651aa9ca-0c95-45dc-8aab-af4d6167c938'::uuid)
+with check (auth.uid() = '651aa9ca-0c95-45dc-8aab-af4d6167c938'::uuid);
 
 drop policy if exists "Only archive admin can delete entries" on public.archive_entries;
 create policy "Only archive admin can delete entries"
 on public.archive_entries for delete to authenticated
-using (auth.uid() = 'REPLACE_WITH_ADMIN_AUTH_USER_UUID'::uuid);
+using (auth.uid() = '651aa9ca-0c95-45dc-8aab-af4d6167c938'::uuid);
 
 -- No public INSERT/UPDATE/DELETE grants are given to anon. The only write path
 -- is an authenticated session whose user UUID matches your private admin UUID.

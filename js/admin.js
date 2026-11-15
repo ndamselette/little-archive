@@ -1,6 +1,10 @@
 (() => {
     const SUPABASE_URL = 'https://fdqctimtqehetboszlbg.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_gHfal4nlxw_5j67FTmV_0w_hIzRMjLu';
+  // Cloudinary unsigned upload configuration (public values, never API secret).
+  const CLOUDINARY_CLOUD_NAME = 'zjfvbcaj';
+  const CLOUDINARY_IMAGE_PRESET = 'little_archive_images';
+  const CLOUDINARY_AUDIO_PRESET = 'little_archive_audio';
   const configured = /^https:\/\//.test(SUPABASE_URL) && !SUPABASE_URL.includes('YOUR_') && SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes('YOUR_');
   const $ = (id) => document.getElementById(id);
   const sectionNames = {movies:'Movies, series & books',ships:'Ships & dynamics',songs:'Songs',hobbies:'Hobbies & interests'};
@@ -33,6 +37,8 @@
     $('shipFields').hidden=section!=='ships';
     $('songFields').hidden=section!=='songs';
     $('imageField').hidden=section==='songs';
+    $('imageUploadField').hidden=section==='songs';
+    $('imageUploadStatus').hidden=section==='songs';
     $('imagePreviewWrap').hidden=section==='songs';
     $('entryType').value=['Movie','Series','Book'].includes(metadata.type)?metadata.type:'Movie';
     $('creatorLabel').textContent=$('entryType').value==='Book'?'Author':'Director';
@@ -85,6 +91,50 @@
       metadata.emoji=metadata.emoji||'✿';
     }
     return metadata;
+  }
+  async function uploadMedia(file, kind) {
+    if (!client || !file) return;
+    const image = kind === 'image';
+    const statusId = image ? 'imageUploadStatus' : 'audioUploadStatus';
+    const inputId = image ? 'imageUpload' : 'audioUpload';
+    const allowed = image ? ['image/jpeg','image/png','image/webp','image/gif'] : ['audio/mpeg','audio/mp3','audio/ogg','audio/wav','audio/x-wav','audio/mp4'];
+    const extension = (file.name.split('.').pop() || '').toLowerCase();
+    const allowedExtensions = image ? ['jpg','jpeg','png','webp','gif'] : ['mp3','ogg','wav','m4a'];
+    const limit = image ? 10 * 1024 * 1024 : 50 * 1024 * 1024;
+    if ((!allowed.includes(file.type) && !allowedExtensions.includes(extension)) || !allowedExtensions.includes(extension) || file.size > limit || file.size === 0) {
+      status(statusId, `Please choose a valid ${image?'image (up to 10 MB)':'audio file (up to 50 MB)'}.`, 'error');
+      $(inputId).value = '';
+      return;
+    }
+    const preset = image ? CLOUDINARY_IMAGE_PRESET : CLOUDINARY_AUDIO_PRESET;
+    if ([CLOUDINARY_CLOUD_NAME, preset].some(value => !value || value.startsWith('YOUR_'))) {
+      status(statusId, 'Configure your Cloudinary cloud name and unsigned upload presets in js/admin.js first.', 'error');
+      $(inputId).value = '';
+      return;
+    }
+    $('saveEntry').disabled = true;
+    $(inputId).disabled = true;
+    status(statusId, 'Uploading to Cloudinary…');
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', preset);
+      // Cloudinary handles audio under the video resource type.
+      const resourceType = image ? 'image' : 'video';
+      const endpoint = `https://api.cloudinary.com/v1_1/${encodeURIComponent(CLOUDINARY_CLOUD_NAME)}/${resourceType}/upload`;
+      const response = await fetch(endpoint, {method:'POST', body:formData});
+      const data = await response.json();
+      if (!response.ok || !data.secure_url) throw new Error(data.error?.message || `Cloudinary returned HTTP ${response.status}`);
+      $(image?'entryImage':'entryAudio').value = data.secure_url;
+      if (image) setImagePreview();
+      status(statusId, 'Uploaded to Cloudinary! URL filled automatically. Save the entry to publish. ♡', 'success');
+    } catch(error) {
+      status(statusId, `Upload failed: ${error.message}`, 'error');
+    } finally {
+      $(inputId).disabled = false;
+      $('saveEntry').disabled = false;
+      $(inputId).value = '';
+    }
   }
   function status(id, message, kind='') { const el=$(id); el.textContent=message; el.className=`status ${kind}`.trim(); }
   function setLoggedIn(user) { $('loginCard').hidden=!!user; $('dashboard').hidden=!user; }
@@ -160,6 +210,8 @@
   }
   $('loginForm').addEventListener('submit',async e=>{e.preventDefault();if(!client)return;status('loginStatus','Signing in…');const {error}=await client.auth.signInWithPassword({email:$('loginEmail').value.trim(),password:$('loginPassword').value});if(error)status('loginStatus',error.message,'error');else status('loginStatus','Signed in.','success');});
   $('signOut').addEventListener('click',async()=>{await client.auth.signOut();setLoggedIn(null);});
+  $('imageUpload').addEventListener('change',e=>uploadMedia(e.target.files?.[0],'image'));
+  $('audioUpload').addEventListener('change',e=>uploadMedia(e.target.files?.[0],'audio'));
   $('entryForm').addEventListener('submit',saveEntry); $('section').addEventListener('change',updateMetadataHelp); $('entryType').addEventListener('change',()=>{ $('creatorLabel').textContent=$('entryType').value==='Book'?'Author':'Director'; if(Object.values(defaultImages.movies).includes($('entryImage').value)||!$('entryImage').value) $('entryImage').value=defaultImage('movies',$('entryType').value); setImagePreview(); }); $('entryImage').addEventListener('input',setImagePreview); $('resetForm').addEventListener('click',resetForm); $('cancelEdit').addEventListener('click',resetForm); $('refreshEntries').addEventListener('click',loadEntries); $('listSearch').addEventListener('input',renderEntries); $('listSection').addEventListener('change',renderEntries);
   $('entryList').addEventListener('click',e=>{const edit=e.target.closest('[data-edit]'),del=e.target.closest('[data-delete]');if(edit)editEntry(edit.dataset.edit);if(del)deleteEntry(del.dataset.delete);});
   $('refreshGuestbook').addEventListener('click',loadGuestbook); $('guestbookSearch').addEventListener('input',renderGuestbook); $('guestbookStatusFilter').addEventListener('change',renderGuestbook);
