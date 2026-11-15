@@ -753,6 +753,45 @@ async function bootLittleArchive() {
 }
 bootLittleArchive();
 // Gentle reveal on scroll, with a graceful fallback for older browsers.
+
+const realtimeClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+let refreshTimer;
+
+async function refreshArchive() {
+  await loadArchiveEntries();
+
+  renderArchive();
+  renderFilters();
+  renderMovies();
+  renderShips();
+  renderHobbies();
+  renderTracks();
+
+  console.log("Little Archive updated!");
+}
+
+realtimeClient
+  .channel("little-archive-live")
+  .on(
+    "postgres_changes",
+    {
+      event: "*",
+      schema: "public",
+      table: "archive_entries"
+    },
+    () => {
+      clearTimeout(refreshTimer);
+      refreshTimer = setTimeout(refreshArchive, 250);
+    }
+  )
+  .subscribe((status) => {
+    console.log("Realtime status:", status);
+  });
+
 document
   .querySelectorAll(
     "#introduction .section-head,#about .section-head,#testimonials .section-head,.intro-panel,.archive-card,.quote-stage",
